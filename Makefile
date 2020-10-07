@@ -69,7 +69,7 @@ devserver-global:
 publish:
 	"$(PELICAN)" "$(INPUTDIR)" -o "$(OUTPUTDIR)" -s "$(PUBLISHCONF)" $(PELICANOPTS)
 
-push:
-	""
+ssh_upload:
+	"scp output/* jeff@freenas:/mnt/Duluth/Jeff/blog"
 
 .PHONY: html help clean regenerate serve serve-global devserver publish push

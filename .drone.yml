@@ -1,0 +1,22 @@
+---
+kind: pipeline
+type: kubernetes
+name: build_image
+
+
+
+steps:
+
+- name: build
+  image: python
+  commands:
+  - python -m install pip
+  - make publish
+
+- name: publish
+  image: plugins/docker
+  settings:
+    repo: toxicglados/blog
+    tags: latest
+    dry_run: true
+

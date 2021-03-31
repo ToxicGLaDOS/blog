@@ -1,9 +1,7 @@
 ---
 kind: pipeline
-type: kubernetes
+type: docker
 name: build_image
-
-
 
 steps:
 

@@ -3,6 +3,10 @@ kind: pipeline
 type: docker
 name: build_image
 
+platform:
+  os: linux
+  arch: arm64
+
 steps:
 - name: build
   image: python

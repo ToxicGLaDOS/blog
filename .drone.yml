@@ -11,7 +11,7 @@ steps:
 - name: build
   image: python
   commands:
-  - python -m pip install pelican
+  - python -m pip install pelican['markdown']
   - make publish
 
 - name: publish

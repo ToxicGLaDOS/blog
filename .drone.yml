@@ -11,7 +11,7 @@ steps:
 - name: build
   image: python
   commands:
-  - python -m install pip
+  - python -m pip install pelican
   - make publish
 
 - name: publish

@@ -19,5 +19,8 @@ steps:
   settings:
     repo: toxicglados/blog
     tags: latest
+    username: toxicglados
+    password:
+      from_secret: docker_password
     dry_run: true
 

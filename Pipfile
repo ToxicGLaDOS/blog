@@ -7,6 +7,3 @@ verify_ssl = true
 
 [packages]
 pelican = {extras = ["markdown"],version = "*"}
-
-[requires]
-python_version = "3.8"

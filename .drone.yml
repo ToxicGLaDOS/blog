@@ -22,5 +22,3 @@ steps:
     username: toxicglados
     password:
       from_secret: docker_password
-    dry_run: true
-

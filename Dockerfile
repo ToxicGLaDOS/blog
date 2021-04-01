@@ -1,3 +1,3 @@
 FROM nginx
 
-COPY ./output/* /var/www/blog/
+COPY ./output/ /var/www/blog/

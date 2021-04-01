@@ -1,3 +1,3 @@
-FROM ngnix
+FROM nginx
 
-COPY ./output/* /usr/share/nginx/html
+COPY ./output/* /usr/share/nginx/html/

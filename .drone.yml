@@ -23,9 +23,12 @@ steps:
     password:
       from_secret: docker_password
 
-
 - name: rollout
   image: toxicglados/drone-rollout
   settings:
     deployment: blog
     namespace: blog
+    kubernetes_cert:
+      from_secret: KUBERNETES_CERT
+    kubernetes_token:
+      from_secret: KUBERNETES_TOKEN

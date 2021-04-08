@@ -29,6 +29,8 @@ steps:
   settings:
     deployment: blog
     namespace: blog
+    kubernetes_server:
+      from_secret: KUBERNETES_SERVER
     kubernetes_cert:
       from_secret: KUBERNETES_CERT
     kubernetes_token:

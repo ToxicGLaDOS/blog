@@ -25,7 +25,6 @@ steps:
 
 - name: rollout
   image: toxicglados/drone-rollout:latest
-  pull: always
   settings:
     deployment: blog
     namespace: blog

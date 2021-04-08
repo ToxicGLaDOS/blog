@@ -25,7 +25,7 @@ steps:
 
 
 - name: rollout
-  image: toxicglados/drone-rollout-restart
+  image: toxicglados/drone-rollout
   settings:
     deployment: blog
     namespace: blog

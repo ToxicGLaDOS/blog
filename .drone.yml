@@ -23,6 +23,7 @@ steps:
     password:
       from_secret: docker_password
 
+
 - name: rollout
   image: toxicglados/drone-rollout-restart
   settings:

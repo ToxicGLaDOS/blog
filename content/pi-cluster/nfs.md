@@ -83,11 +83,11 @@ Unsurprisingly the [voidlinux docs on setting up an nfs server on voidlinux](htt
 
 `sv` doesn't make this super clear in my opinion. 
 For example _this_ means everything is good
-    
 ```
 > sudo sv restart nfs-server
 ok: run: nfs-server: (pid 9446) 1s
 ```
+
 while _this_ means everything is broken
 
 ```

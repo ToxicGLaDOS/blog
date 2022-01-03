@@ -26,19 +26,44 @@ for root, dirs, files in os.walk("./content"):
                             posts.append(sub_obj())
 
 
+def make_head():
+    return """<head>
+<link rel="stylesheet" href="styles.css">
+</head>"""
+
 def make_header():
-    return ""
+    dropdown = ""
+    for category in set([post.category for post in posts]):
+        dropdown += f"""<header>
+        <nav class="top-nav">
+        <div class="dropdown">
+              <a href={category.replace(' ', '-') + '.html'}>{category}</a>
+                  <div class="dropdown-content">"""
+
+        #for post in [post for post in posts if post.category == category]:
+        #    dropdown += f"""
+        #              <a href="{post.title.replace(' ', '-') + '.html'}">{post.title}</a>
+        #              """
+
+        dropdown += f"""
+              </div>
+        </div>
+        </nav>
+        </header>"""
+
+    return dropdown
 
 def make_footer():
-    return f"""<section>
+    return f"""<footer><section>
     <a href=https://github.com/toxicglados>GitHub</a>
-    </section>"""
+    </section></footer>"""
 
 def make_title(title):
-    return f"<h1>{title}</h1>\n"
+    return f"<h1><a href={title.replace(' ', '-') + '.html'}>{title}</a></h1>\n"
 
 all_posts = ""
 
+all_posts += make_head()
 all_posts += make_header()
 
 all_posts += "<section>"
@@ -57,4 +82,51 @@ if not os.path.exists('output'):
 output_filename = "index.html"
 with open(os.path.join('output', output_filename), 'w') as f:
     f.write(all_posts)
+
+
+# Generate a page per post
+for post in posts:
+    output_filename = post.title.replace(' ', '-') + '.html'
+    page = ""
+    page += make_head()
+    page += make_header()
+    page += "<section>"
+    page += make_title(post.title)
+    page += post.content
+    page += "</section>"
+    page += make_footer()
+    with open(os.path.join('output', output_filename), 'w') as f:
+        f.write(page)
+
+# Generate a page per category
+for category in set([post.category for post in posts]):
+    output_filename = category.replace(' ', '-') + '.html'
+    page = ""
+    page += make_head()
+    page += make_header()
+    page += "<section>"
+    for post in [post for post in posts if post.category == category]:
+        page += make_title(post.title)
+        page += post.content
+    page += "</section>"
+    page += make_footer()
+
+    with open(os.path.join('output', output_filename), 'w') as f:
+        f.write(page)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

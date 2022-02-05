@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-import os, importlib
+import os, importlib, shutil
 
 from utils.decorator import ContentGenerator
 
 posts = []
+
+shutil.rmtree('output')
 
 for root, dirs, files in os.walk("./content"):
     for file in files:
@@ -16,14 +18,14 @@ for root, dirs, files in os.walk("./content"):
                 obj = getattr(module, name)
                 # Finds top level functions
                 if isinstance(obj, ContentGenerator):
-                    posts.append(obj())
+                    posts.extend(obj())
                 # Finds top level methods
                 # this could recursively check nested classes, but I doubt I'll ever use that so :shrug:
                 elif isinstance(obj, object):
                     for sub_name in dir(obj):
                         sub_obj = getattr(obj, sub_name)
                         if isinstance(sub_obj, ContentGenerator):
-                            posts.append(sub_obj())
+                            posts.extend(sub_obj())
 
 
 def make_head():
@@ -32,25 +34,22 @@ def make_head():
 </head>"""
 
 def make_header():
-    dropdown = ""
+    dropdown = '<header><nav class="top-nav"><div>'
     for category in set([post.category for post in posts]):
-        dropdown += f"""<header>
-        <nav class="top-nav">
-        <div class="dropdown">
+        dropdown += f"""
+        <div class="dropdown nav-category">
               <a href={category.replace(' ', '-') + '.html'}>{category}</a>
                   <div class="dropdown-content">"""
-
+        # The stuff in the dropdown goes here
         #for post in [post for post in posts if post.category == category]:
         #    dropdown += f"""
         #              <a href="{post.title.replace(' ', '-') + '.html'}">{post.title}</a>
         #              """
 
         dropdown += f"""
-              </div>
-        </div>
-        </nav>
-        </header>"""
-
+                  </div>
+        </div>"""
+    dropdown += "</div></nav></header>"
     return dropdown
 
 def make_footer():
@@ -114,19 +113,8 @@ for category in set([post.category for post in posts]):
     with open(os.path.join('output', output_filename), 'w') as f:
         f.write(page)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# Copy in static content
+for file in os.listdir('static'):
+    shutil.copy(os.path.join('static', file), os.path.join('output', file))
 
 

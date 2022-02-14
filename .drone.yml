@@ -8,12 +8,6 @@ platform:
   arch: arm64
 
 steps:
-- name: build
-  image: python
-  commands:
-  - python -m pip install -r requirements.txt
-  - python main.py
-
 - name: publish
   image: plugins/docker
   settings:

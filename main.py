@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os, importlib, shutil
 
+from datetime import datetime
 from utils.decorator import ContentGenerator
 
 posts = []
@@ -60,6 +61,9 @@ def make_footer():
 
 def make_title(title):
     return f"<h1><a href={title.replace(' ', '-') + '.html'}>{title}</a></h1>\n"
+
+# Sort posts by date posted, with most recent first
+posts = list(reversed(sorted(posts, key=lambda post: datetime.strptime(post.date, '%m-%d-%Y %H:%M'))))
 
 all_posts = ""
 

@@ -5,7 +5,8 @@ from utils.decorator import ContentGenerator
 
 posts = []
 
-shutil.rmtree('output')
+if os.path.exists('output'):
+    shutil.rmtree('output')
 
 for root, dirs, files in os.walk("./content"):
     for file in files:

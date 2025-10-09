@@ -1,5 +1,5 @@
 Title: Adding a new node to the cluster
-Date: 10-06-2020 20:00
+Date: 10-06-2020 20:00 -0500
 Category: Pi Cluster
 
 This is a guide on adding a new raspberry pi node to your k3s managed kubernetes cluster.

@@ -1,6 +1,6 @@
 Title: Tilemaps with data
 Category: Cavetown
-Date: 02-04-2022 13:30
+Date: 02-04-2022 13:30 -0600
 
 #### How and why you might want tilemaps that have data associated with the tiles in [Godot](https://godotengine.org/).
 

@@ -1,5 +1,5 @@
 Title: What's the best subsonic client for Android?
-Date: 09-19-2025 16:48
+Date: 09-19-2025 16:48 -0500
 Category: Music
 
 I've been using [Ultrasonic](https://gitlab.com/ultrasonic/ultrasonic) for a

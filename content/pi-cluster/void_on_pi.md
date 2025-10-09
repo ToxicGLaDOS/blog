@@ -1,5 +1,5 @@
 Title: Installing voidlinux on a RaspberryPi
-Date: 02-10-2022 18:00
+Date: 02-10-2022 18:00 -0600
 Category: Pi Cluster
 
 To install [voidlinux](https://voidlinux.org/) on a Pi we'll have to do a `chroot` install. For official documentation on installing from `chroot` for void see [here](https://docs.voidlinux.org/installation/guides/chroot.html).

@@ -1,5 +1,5 @@
 Title: Setting up an nfs server for persistent storage in k8s
-Date: 04-02-2021 12:00
+Date: 04-02-2021 12:00 -0500
 Category: Pi Cluster
 
 These are some helpful tips I found when trying to set up an nfs for persistent volumes on my k8s cluster. Setting up the actual persistent volumes and claims will come later.

@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
 import os, importlib, shutil
 
-from datetime import datetime
+import datetime
 from utils.decorator import ContentGenerator
 import urllib.parse
+import xml.etree.ElementTree as ET
+
 
 posts = []
+
+BLOG_TITLE = "Black Olive Pineapple"
 
 if os.path.exists('output'):
     shutil.rmtree('output')
@@ -32,8 +36,9 @@ for root, dirs, files in os.walk("./content"):
 
 
 def make_head():
-    return """<head>
+    return f"""<head>
 <link rel="stylesheet" href="styles.css">
+<link rel="alternate" type="application/rss+xml" title="{BLOG_TITLE}" href=/rss.xml>
 </head>"""
 
 def make_header():
@@ -61,10 +66,53 @@ def make_footer():
     </section></footer>"""
 
 def make_title(title):
-    return f"<h1><a href={urllib.parse.quote_plus(title.replace(' ', '-')) + '.html'}>{title}</a></h1>\n"
+    return f"<h1><a href={get_title_link(title)}>{title}</a></h1>\n"
+
+def make_rss_feed(posts):
+    root = ET.Element('rss')
+    root.set('version', '2.0')
+    root.set('xmlns:atom', 'http://www.w3.org/2005/Atom')
+    channel = ET.SubElement(root, 'channel')
+    title = ET.SubElement(channel, 'title')
+    title.text = BLOG_TITLE
+    link = ET.SubElement(channel, 'link')
+    link.text = "https://blackolivepineapple.pizza"
+    description = ET.SubElement(channel, 'description')
+    description.text = "Jeff's blog about more than just pizza!"
+    language = ET.SubElement(channel, 'language')
+    language.text = "en-us"
+    publication_time = datetime.datetime.now(datetime.timezone.utc).astimezone()
+    pub_date = ET.SubElement(channel, 'pubDate')
+    pub_date.text = publication_time.strftime('%a, %d %b %Y %H:%M:%S %z')
+
+    for post in posts:
+        item = ET.SubElement(channel, 'item')
+        item_title = ET.SubElement(item, 'title')
+        item_title.text = post.title
+        item_link = ET.SubElement(item, 'link')
+        item_link.text = f"https://blackolivepineapple.pizza/{get_title_link(post.title)}"
+        item_description = ET.SubElement(item, 'description')
+        item_description.text = post.content
+        item_pub_date = ET.SubElement(item, 'pubDate')
+        item_pub_date.text = datetime.datetime.strptime(post.date, '%m-%d-%Y %H:%M %z').strftime('%a, %d %b %Y %H:%M:%S %z')
+        # The official rss example page uses a link as a GUID but I'm not sure
+        # if I like that or not. Or if I even want a guid :shrug:
+        # https://www.rssboard.org/files/sample-rss-2.xml
+        item_guid = ET.SubElement(item, 'guid')
+        item_guid.text = f"https://blackolivepineapple.pizza/{get_title_link(post.title)}"
+
+    return ET.tostring(root)
+
+def normalize_filename(title):
+    # This is just cause I don't like space in my filenames :)
+    filename = title.replace(' ', '-') + '.html'
+    return filename
+
+def get_title_link(title):
+    return urllib.parse.quote_plus(title.replace(' ', '-')) + '.html'
 
 # Sort posts by date posted, with most recent first
-posts = list(reversed(sorted(posts, key=lambda post: datetime.strptime(post.date, '%m-%d-%Y %H:%M'))))
+posts = list(reversed(sorted(posts, key=lambda post: datetime.datetime.strptime(post.date, '%m-%d-%Y %H:%M %z'))))
 
 all_posts = ""
 
@@ -91,7 +139,7 @@ with open(os.path.join('output', output_filename), 'w') as f:
 
 # Generate a page per post
 for post in posts:
-    output_filename = post.title.replace(' ', '-') + '.html'
+    output_filename = normalize_filename(post.title)
     page = ""
     page += make_head()
     page += make_header()
@@ -105,7 +153,7 @@ for post in posts:
 
 # Generate a page per category
 for category in set([post.category for post in posts]):
-    output_filename = category.replace(' ', '-') + '.html'
+    output_filename = normalize_filename(category)
     page = ""
     page += make_head()
     page += make_header()
@@ -123,4 +171,9 @@ for category in set([post.category for post in posts]):
 for file in os.listdir('static'):
     shutil.copy(os.path.join('static', file), os.path.join('output', file))
 
+# Make rss feed
+rss = make_rss_feed(posts)
+# rss.xml is what xkcd uses, so good enough for me!
+with open(os.path.join('output', 'rss.xml'), 'wb') as f:
+    f.write(rss)
 
